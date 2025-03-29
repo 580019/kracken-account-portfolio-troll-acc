@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Exchange</title>
+
+</head>
+<style>
+    
+    * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background-color: white;
+            padding: 20px 0;
+            border-right: 1px solid #eee;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            padding: 0 20px 20px;
+        }
+        
+        .logo-circle {
+            width: 36px;
+            height: 36px;
+            background-color: #8b46ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .nav-item.active {
+            color: #8b46ff;
+            background-color: rgba(139, 70, 255, 0.1);
+            border-left: 3px solid #8b46ff;
+        }
+        
+        .nav-item:hover:not(.active) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            max-width: 1200px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 30px;
+        }
+        
+        .greeting {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 16px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #8b46ff;
+            color: white;
+        }
+        
+        .btn-icon {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .portfolio-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .portfolio-header {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .portfolio-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .time-filter {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .time-btn {
+            padding: 8px 16px;
+            border-radius: 50px;
+            border: 1px solid #eee;
+            background-color: #f7f7f7;
+            color: #666;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .time-btn.active {
+            background-color: #333;
+            color: white;
+            border-color: #333;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            width: 100px;
+        }
+        
+        .btn-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #8b46ff;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        .btn-circle.sell {
+            background-color: #8b46ff;
+        }
+        
+        .btn-circle.convert {
+            background-color: #8b46ff;
+        }
+        
+        .btn-circle.deposit {
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        
+        .btn-circle.withdraw {
+            background-color: #f7f7f7;
+            color: #333;
+        }
+        
+        .action-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+        
+        .watchlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .watchlist-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .view-btn {
+            padding: 6px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .view-btn.active {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .crypto-cards {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .crypto-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            min-width: 200px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .crypto-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #f7f7f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        
+        .crypto-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .crypto-ticker {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .chart {
+            height: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .chart-btc {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C20,40 40,20 60,25 C80,30 100,10 120,15 C140,20 160,35 180,25 C190,20 200,30 200,30' stroke='%23f7931a' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .chart-eth {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C10,35 30,45 50,40 C70,35 90,15 110,20 C130,25 150,40 170,35 C190,30 200,25 200,25' stroke='%233c3c3d' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .crypto-change {
+            font-size: 14px;
+            font-weight: 500;
+            color: #f44336;
+            margin-bottom: 5px;
+        }
+        
+        .crypto-change.positive {
+            color: #4caf50;
+        }
+        
+        .crypto-price {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #8b46ff;
+            box-shadow: 0 0 0 2px rgba(139, 70, 255, 0.2);
+        }
+        
+        .btn-block {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+        }
+
+        /* Transaction History Modal */
+        .transaction-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .transaction-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transaction-type {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .transaction-date {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .transaction-amount {
+            font-weight: 600;
+        }
+
+        .transaction-amount.credit {
+            color: #4caf50;
+        }
+
+        .transaction-amount.debit {
+            color: #f44336;
+        }
+
+        /* Navigation Icons */
+        .icon-home {
+            color: currentColor;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .portfolio-item {
+            background-color: #f7f7f7;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portfolio-item-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-item-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .portfolio-item-name {
+            font-weight: 600;
+        }
+
+        .portfolio-item-balance {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .portfolio-item-value {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+</style>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-circle">K</div>
+            </div>
+            <div class="nav-item active">
+                <div class="nav-icon icon-home">🏠</div>
+                <span>Home</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">💼</div>
+                <span>Portfolio</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">🔍</div>
+                <span>Explore</span>
+            </div>
+            <div class="nav-item">
+                <div class="nav-icon">↔️</div>
+                <span>Transfer</span>
+            </div>
+            <div class="nav-item" id="transactions-nav">
+                <div class="nav-icon">⏱️</div>
+                <span>Transactions</span>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <div class="greeting">Good afternoon</div>
+                <div class="header-buttons">
+                    <button class="btn btn-primary">Buy crypto</button>
+                    <button class="btn btn-icon">⋮</button>
+                    <button class="btn btn-icon">❓</button>
+                    <button class="btn btn-icon">🔔</button>
+                </div>
+            </div>
+            <div class="portfolio-card">
+                <div class="portfolio-header">Portfolio value</div>
+                <div class="portfolio-value" id="total-balance">$0.00</div>
+                <div class="time-filter">
+                    <button class="time-btn active">1W</button>
+                    <button class="time-btn">1M</button>
+                    <button class="time-btn">3M</button>
+                    <button class="time-btn">6M</button>
+                    <button class="time-btn">1Y</button>
+                    <button class="time-btn">ALL</button>
+                </div>
+                <div class="action-buttons">
+                    <div class="action-btn">
+                        <div class="btn-circle" id="buy-btn">+</div>
+                        <div class="action-label">Buy</div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="btn-circle sell" id="sell-btn">-</div>
+                        <div class="action-label">Sell</div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="btn-circle convert" id="convert-btn">↔️</div>
+                        <div class="action-label">Convert</div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="btn-circle deposit" id="deposit-btn">↓</div>
+                        <div class="action-label">Deposit</div>
+                    </div>
+                    <div class="action-btn">
+                        <div class="btn-circle withdraw" id="withdraw-btn">↑</div>
+                        <div class="action-label">Withdraw</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="watchlist-header">
+                <div class="watchlist-title">Watchlist</div>
+                <div class="view-toggle">
+                    <div class="view-btn active">📊</div>
+                    <div class="view-btn">📋</div>
+                </div>
+            </div>
+            <div class="crypto-cards">
+                <div class="crypto-card" data-crypto="BTC">
+                    <div class="crypto-icon" style="background-color: #f7931a; color: white;">₿</div>
+                    <div class="crypto-name">Bitcoin</div>
+                    <div class="crypto-ticker">BTC</div>
+                    <div class="chart chart-btc"></div>
+                    <div class="crypto-change positive">↗ 2.49%</div>
+                    <div class="crypto-price">$83,693.85</div>
+                </div>
+                <div class="crypto-card" data-crypto="ETH">
+                    <div class="crypto-icon" style="background-color: #627eea; color: white;">Ξ</div>
+                    <div class="crypto-name">Ethereum</div>
+                    <div class="crypto-ticker">ETH</div>
+                    <div class="chart chart-eth"></div>
+                    <div class="crypto-change positive">↗ 1.93%</div>
+                    <div class="crypto-price">$1,882.24</div>
+                </div>
+                <div class="crypto-card" data-crypto="SOL">
+                    <div class="crypto-icon" style="background-color: #00ffbd; color: white;">◎</div>
+                    <div class="crypto-name">Solana</div>
+                    <div class="crypto-ticker">SOL</div>
+                    <div class="chart chart-sol"></div>
+                    <div class="crypto-change positive">↗ 3.54%</div>
+                    <div class="crypto-price">$144.80</div>
+                </div>
+                <div class="crypto-card" data-crypto="BNB">
+                    <div class="crypto-icon" style="background-color: #f3ba2f; color: white;">Ⓑ</div>
+                    <div class="crypto-name">Binance Coin</div>
+                    <div class="crypto-ticker">BNB</div>
+                    <div class="chart chart-bnb"></div>
+                    <div class="crypto-change negative">↘ 0.72%</div>
+                    <div class="crypto-price">$576.14</div>
+                </div>
+                <div class="crypto-card" data-crypto="XRP">
+                    <div class="crypto-icon" style="background-color: #23292f; color: white;">✗</div>
+                    <div class="crypto-name">XRP</div>
+                    <div class="crypto-ticker">XRP</div>
+                    <div class="chart chart-xrp"></div>
+                    <div class="crypto-change positive">↗ 1.21%</div>
+                    <div class="crypto-price">$0.49</div>
+                </div>
+                <div class="crypto-card" data-crypto="TRX">
+                    <div class="crypto-icon" style="background-color: #ff0013; color: white;">⊤</div>
+                    <div class="crypto-name">TRON</div>
+                    <div class="crypto-ticker">TRX</div>
+                    <div class="chart chart-trx"></div>
+                    <div class="crypto-change positive">↗ 0.82%</div>
+                    <div class="crypto-price">$0.11</div>
+                </div>
+            </div>
+
+            <div class="watchlist-header" style="margin-top: 30px;">
+                <div class="watchlist-title">My Portfolio</div>
+            </div>
+            <div id="portfolio-container">
+                <div class="empty-state" id="empty-portfolio">
+                    <div class="empty-icon">💰</div>
+                    <p>Your portfolio is empty. Start by buying or depositing crypto.</p>
+                </div>
+                <div class="portfolio-grid" id="portfolio-grid" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Buy Modal -->
+    <div class="modal" id="buy-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Buy Crypto</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="buy-form">
+                <div class="form-group">
+                    <label class="form-label">Select Cryptocurrency</label>
+                    <select class="form-control" id="buy-crypto">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="XRP">XRP (XRP)</option>
+                        <option value="TRX">TRON (TRX)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount ($)</label>
+                    <input type="number" class="form-control" id="buy-amount" placeholder="Enter USD amount" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Receive</label>
+                    <div class="estimate-container" id="buy-estimate">0.00000000</div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Buy Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sell Modal -->
+    <div class="modal" id="sell-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Sell Crypto</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="sell-form">
+                <div class="form-group">
+                    <label class="form-label">Select Cryptocurrency</label>
+                    <select class="form-control" id="sell-crypto">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="XRP">XRP (XRP)</option>
+                        <option value="TRX">TRON (TRX)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="sell-amount" placeholder="Enter amount" step="0.00000001" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"></label>
+                    <div class="balance-container" id="sell-balance"></div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Sell Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Convert Modal -->
+    <div class="modal" id="convert-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Convert Crypto</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="convert-form">
+                <div class="form-group">
+                    <label class="form-label">From</label>
+                    <select class="form-control" id="convert-from">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="XRP">XRP (XRP)</option>
+                        <option value="TRX">TRON (TRX)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="convert-amount" placeholder="Enter amount" step="0.00000001" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Available Balance</label>
+                    <div class="balance-container" id="convert-balance">0.00000000</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">To</label>
+                    <select class="form-control" id="convert-to">
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="XRP">XRP (XRP)</option>
+                        <option value="TRX">TRON (TRX)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estimated Receive</label>
+                    <div class="estimate-container" id="convert-estimate">0.00000000</div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Convert Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Deposit Modal -->
+    <div class="modal" id="deposit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Deposit Crypto</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="deposit-form">
+                <div class="form-group">
+                    <label class="form-label">Select Cryptocurrency</label>
+                    <select class="form-control" id="deposit-crypto">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="XRP">XRP (XRP)</option>
+                        <option value="TRX">TRON (TRX)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="deposit-amount" placeholder="Enter amount" step="0.00000001" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Deposit Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div class="modal" id="withdraw-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Withdraw Crypto</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <form id="withdraw-form">
+                <div class="form-group">
+                    <label class="form-label">Select Cryptocurrency</label>
+                    <select class="form-control" id="withdraw-crypto">
+                        <option value="BTC">Bitcoin (BTC)</option>
+                        <option value="ETH">Ethereum (ETH)</option>
+                        <option value="SOL">Solana (SOL)</option>
+                        <option value="BNB">Binance Coin (BNB)</option>
+                        <option value="XRP">XRP (XRP)</option>
+                        <option value="TRX">TRON (TRX)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Amount</label>
+                    <input type="number" class="form-control" id="withdraw-amount" placeholder="Enter amount" step="0.00000001" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Available Balance</label>
+                    <div class="balance-container" id="withdraw-balance">0.00000000</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Address</label>
+                    <input type="text" class="form-control" id="withdraw-address" placeholder="Enter recipient address" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Withdraw Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Transactions Modal -->
+    <div class="modal" id="transactions-modal">
+        <div class="modal-content" style="width: 600px;">
+            <div class="modal-header">
+                <div class="modal-title">Transaction History</div>
+                <button class="close-btn">&times;</button>
+            </div>
+            <div class="transaction-list" id="transaction-list">
+                <!-- Transactions will be added here dynamically -->
+                <div class="empty-state" id="empty-transactions">
+                    <div class="empty-icon">📝</div>
+                    <p>No transactions yet. Start by buying, selling, or depositing crypto.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Cryptocurrency data
+        const cryptoData = {
+            'BTC': {
+                name: 'Bitcoin',
+                symbol: '₿',
+                color: '#f7931a',
+                price: 83693.85
+            },
+            'ETH': {
+                name: 'Ethereum',
+                symbol: 'Ξ',
+                color: '#627eea',
+                price: 1882.24
+            }, 
+            'SOL': {
+                name: 'Solana',
+                symbol: '◎',
+                color: '#00ffbd',
+                price: 144.80
+            },
+            'BNB': {
+                name: 'Binance Coin',
+                symbol: 'Ⓑ',
+                color: '#f3ba2f',
+                price: 576.14
+            },
+            'XRP': {
+                name: 'XRP',
+                symbol: '✗',
+                color: '#23292f',
+                price: 0.49
+            },
+            'TRX': {
+                name: 'TRON',
+                symbol: '⊤',
+                color: '#ff0013',
+                price: 0.11
+            }
+        };
+
+        // Initialize portfolio and transaction history from local storage
+        let portfolio = JSON.parse(localStorage.getItem('portfolio')) || {};
+        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+        // DOM elements
+        const buyBtn = document.getElementById('buy-btn');
+        const sellBtn = document.getElementById('sell-btn');
+        const convertBtn = document.getElementById('convert-btn');
+        const depositBtn = document.getElementById('deposit-btn');
+        const withdrawBtn = document.getElementById('withdraw-btn');
+        const transactionsNav = document.getElementById('transactions-nav');
+        
+        const buyModal = document.getElementById('buy-modal');
+        const sellModal = document.getElementById('sell-modal');
+        const convertModal = document.getElementById('convert-modal');
+        const depositModal = document.getElementById('deposit-modal');
+        const withdrawModal = document.getElementById('withdraw-modal');
+        const transactionsModal = document.getElementById('transactions-modal');
+        
+        const buyForm = document.getElementById('buy-form');
+        const sellForm = document.getElementById('sell-form');
+        const convertForm = document.getElementById('convert-form');
+        const depositForm = document.getElementById('deposit-form');
+        const withdrawForm = document.getElementById('withdraw-form');
+        
+        const totalBalanceEl = document.getElementById('total-balance');
+        const portfolioGrid = document.getElementById('portfolio-grid');
+        const emptyPortfolio = document.getElementById('empty-portfolio');
+        const transactionList = document.getElementById('transaction-list');
+        const emptyTransactions = document.getElementById('empty-transactions');
+
+        // New elements for balance displays
+        const buyEstimate = document.getElementById('buy-estimate');
+        const sellBalance = document.getElementById('sell-balance');
+        const convertBalance = document.getElementById('convert-balance');
+        const convertEstimate = document.getElementById('convert-estimate');
+        const withdrawBalance = document.getElementById('withdraw-balance');
+
+        // Initialize the app
+        function init() {
+            updatePortfolioDisplay();
+            updateTotalBalance();
+            setupEventListeners();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Open modals
+            buyBtn.addEventListener('click', () => openModal(buyModal));
+            sellBtn.addEventListener('click', () => openModal(sellModal));
+            convertBtn.addEventListener('click', () => openModal(convertModal));
+            depositBtn.addEventListener('click', () => openModal(depositModal));
+            withdrawBtn.addEventListener('click', () => openModal(withdrawModal));
+            transactionsNav.addEventListener('click', () => {
+                openModal(transactionsModal);
+                updateTransactionHistory();
+            });
+
+            // Close modals
+            document.querySelectorAll('.close-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.modal').forEach(modal => {
+                        modal.style.display = 'none';
+                    });
+                });
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (event) => {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            });
+
+            // Form submissions
+            buyForm.addEventListener('submit', handleBuy);
+            sellForm.addEventListener('submit', handleSell);
+            convertForm.addEventListener('submit', handleConvert);
+            depositForm.addEventListener('submit', handleDeposit);
+            withdrawForm.addEventListener('submit', handleWithdraw);
+
+            // Populate sell and convert dropdowns based on portfolio
+            document.getElementById('sell-crypto').addEventListener('focus', populatePortfolioDropdowns);
+            document.getElementById('convert-from').addEventListener('focus', populatePortfolioDropdowns);
+        }
+
+        // Open a modal
+        function openModal(modal) {
+            document.querySelectorAll('.modal').forEach(m => {
+                m.style.display = 'none';
+            });
+            modal.style.display = 'flex';
+        }
+
+        // Handle buy form submission
+        function handleBuy(e) {
+            e.preventDefault();
+            
+            const crypto = document.getElementById('buy-crypto').value;
+            const amount = parseFloat(document.getElementById('buy-amount').value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            // Calculate crypto amount based on current price
+            const cryptoAmount = amount / cryptoData[crypto].price;
+            
+            // Update portfolio
+            if (portfolio[crypto]) {
+                portfolio[crypto] += cryptoAmount;
+            } else {
+                portfolio[crypto] = cryptoAmount;
+            }
+            
+            // Record transaction
+            addTransaction('buy', crypto, cryptoAmount, amount);
+            
+            // Update display
+            updatePortfolioDisplay();
+            updateTotalBalance();
+            
+       // Reset form and close modal
+       buyForm.reset();
+            buyModal.style.display = 'none';
+        }
+
+        // Handle sell form submission
+        function handleSell(e) {
+            e.preventDefault();
+            
+            const crypto = document.getElementById('sell-crypto').value;
+            const amount = parseFloat(document.getElementById('sell-amount').value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            // Check if user has enough crypto
+            if (!portfolio[crypto] || portfolio[crypto] < amount) {
+                alert(`You don't have enough ${crypto} to sell`);
+                return;
+            }
+            
+            // Calculate USD value
+            const usdValue = amount * cryptoData[crypto].price;
+            
+            // Update portfolio
+            portfolio[crypto] -= amount;
+            
+            // Remove crypto from portfolio if balance is 0
+            if (portfolio[crypto] <= 0) {
+                delete portfolio[crypto];
+            }
+            
+            // Record transaction
+            addTransaction('sell', crypto, amount, usdValue);
+            
+            // Update display
+            updatePortfolioDisplay();
+            updateTotalBalance();
+            
+            // Reset form and close modal
+            sellForm.reset();
+            sellModal.style.display = 'none';
+        }
+
+        // Handle convert form submission
+        function handleConvert(e) {
+            e.preventDefault();
+            
+            const fromCrypto = document.getElementById('convert-from').value;
+            const toCrypto = document.getElementById('convert-to').value;
+            const amount = parseFloat(document.getElementById('convert-amount').value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            // Check if user has enough crypto
+            if (!portfolio[fromCrypto] || portfolio[fromCrypto] < amount) {
+                alert(`You don't have enough ${fromCrypto} to convert`);
+                return;
+            }
+            
+            // Calculate conversion
+            const usdValue = amount * cryptoData[fromCrypto].price;
+            const toAmount = usdValue / cryptoData[toCrypto].price;
+            
+            // Update portfolio
+            portfolio[fromCrypto] -= amount;
+            
+            // Remove crypto from portfolio if balance is 0
+            if (portfolio[fromCrypto] <= 0) {
+                delete portfolio[fromCrypto];
+            }
+            
+            // Add converted crypto
+            if (portfolio[toCrypto]) {
+                portfolio[toCrypto] += toAmount;
+            } else {
+                portfolio[toCrypto] = toAmount;
+            }
+            
+            // Record transaction
+            addTransaction('convert', `${fromCrypto} to ${toCrypto}`, amount, usdValue);
+            
+            // Update display
+            updatePortfolioDisplay();
+            updateTotalBalance();
+            
+            // Reset form and close modal
+            convertForm.reset();
+            convertModal.style.display = 'none';
+        }
+
+        // Handle deposit form submission
+        function handleDeposit(e) {
+            e.preventDefault();
+            
+            const crypto = document.getElementById('deposit-crypto').value;
+            const amount = parseFloat(document.getElementById('deposit-amount').value);
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            // Update portfolio
+            if (portfolio[crypto]) {
+                portfolio[crypto] += amount;
+            } else {
+                portfolio[crypto] = amount;
+            }
+            
+            // Calculate USD value
+            const usdValue = amount * cryptoData[crypto].price;
+            
+            // Record transaction
+            addTransaction('deposit', crypto, amount, usdValue);
+            
+            // Update display
+            updatePortfolioDisplay();
+            updateTotalBalance();
+            
+            // Reset form and close modal
+            depositForm.reset();
+            depositModal.style.display = 'none';
+        }
+
+        // Handle withdraw form submission
+        function handleWithdraw(e) {
+            e.preventDefault();
+            
+            const crypto = document.getElementById('withdraw-crypto').value;
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const address = document.getElementById('withdraw-address').value;
+            
+            if (isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            if (!address) {
+                alert('Please enter a valid address');
+                return;
+            }
+            
+            // Check if user has enough crypto
+            if (!portfolio[crypto] || portfolio[crypto] < amount) {
+                alert(`You don't have enough ${crypto} to withdraw`);
+                return;
+            }
+            
+            // Calculate USD value
+            const usdValue = amount * cryptoData[crypto].price;
+            
+            // Update portfolio
+            portfolio[crypto] -= amount;
+            
+            // Remove crypto from portfolio if balance is 0
+            if (portfolio[crypto] <= 0) {
+                delete portfolio[crypto];
+            }
+            
+            // Record transaction
+            addTransaction('withdraw', crypto, amount, usdValue, address);
+            
+            // Update display
+            updatePortfolioDisplay();
+            updateTotalBalance();
+            
+            // Reset form and close modal
+            withdrawForm.reset();
+            withdrawModal.style.display = 'none';
+        }
+
+        // Add transaction to history
+        function addTransaction(type, crypto, amount, usdValue, address = '') {
+            const transaction = {
+                id: Date.now(),
+                type,
+                crypto,
+                amount,
+                usdValue,
+                address,
+                timestamp: new Date().toISOString()
+            };
+            
+            transactions.unshift(transaction);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        // Update portfolio display
+        function updatePortfolioDisplay() {
+            // Save to localStorage
+            localStorage.setItem('portfolio', JSON.stringify(portfolio));
+            
+            // Check if portfolio is empty
+            if (Object.keys(portfolio).length === 0) {
+                emptyPortfolio.style.display = 'flex';
+                portfolioGrid.style.display = 'none';
+                return;
+            }
+            
+            // Show portfolio grid
+            emptyPortfolio.style.display = 'none';
+            portfolioGrid.style.display = 'grid';
+            
+            // Clear current display
+            portfolioGrid.innerHTML = '';
+            
+            // Add each crypto to the grid
+            for (const [crypto, amount] of Object.entries(portfolio)) {
+                const usdValue = amount * cryptoData[crypto].price;
+                
+                const cryptoCard = document.createElement('div');
+                cryptoCard.className = 'portfolio-item';
+                cryptoCard.innerHTML = `
+                    <div class="crypto-icon" style="background-color: ${cryptoData[crypto].color}; color: white;">${cryptoData[crypto].symbol}</div>
+                    <div class="crypto-details">
+                        <div class="crypto-name">${cryptoData[crypto].name}</div>
+                        <div class="crypto-amount">${amount.toFixed(8)} ${crypto}</div>
+                        <div class="crypto-value">$${usdValue.toFixed(2)}</div>
+                    </div>
+                `;
+                
+                portfolioGrid.appendChild(cryptoCard);
+            }
+        }
+
+        // Update total balance display
+        function updateTotalBalance() {
+            let total = 0;
+            
+            for (const [crypto, amount] of Object.entries(portfolio)) {
+                total += amount * cryptoData[crypto].price;
+            }
+            
+            totalBalanceEl.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Populate dropdowns with available portfolio assets
+        function populatePortfolioDropdowns() {
+            const sellDropdown = document.getElementById('sell-crypto');
+            const convertDropdown = document.getElementById('convert-from');
+            
+            // Clear current options
+            sellDropdown.innerHTML = '';
+            convertDropdown.innerHTML = '';
+            
+            // Add options based on portfolio
+            for (const crypto in portfolio) {
+                if (portfolio[crypto] > 0) {
+                    const option = document.createElement('option');
+                    option.value = crypto;
+                    option.textContent = `${cryptoData[crypto].name} (${crypto}) - ${portfolio[crypto].toFixed(8)}`;
+                    
+                    const optionClone = option.cloneNode(true);
+                    
+                    sellDropdown.appendChild(option);
+                    convertDropdown.appendChild(optionClone);
+                }
+            }
+            
+            // If no options were added, add a placeholder
+            if (sellDropdown.options.length === 0) {
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'No assets available';
+                option.disabled = true;
+                option.selected = true;
+                
+                const optionClone = option.cloneNode(true);
+                
+                sellDropdown.appendChild(option);
+                convertDropdown.appendChild(optionClone);
+            }
+        }
+
+        // Update transaction history display
+        function updateTransactionHistory() {
+            // Check if transaction history is empty
+            if (transactions.length === 0) {
+                emptyTransactions.style.display = 'flex';
+                return;
+            }
+            
+            // Show transaction list
+            emptyTransactions.style.display = 'none';
+            
+            // Clear current display
+            transactionList.innerHTML = '';
+            transactionList.appendChild(emptyTransactions);
+            
+            // Add each transaction to the list
+            transactions.forEach(transaction => {
+                const date = new Date(transaction.timestamp);
+                const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                
+                const transactionItem = document.createElement('div');
+                transactionItem.className = 'transaction-item';
+                
+                let details = '';
+                switch (transaction.type) {
+                    case 'buy':
+                        details = `Bought ${transaction.amount.toFixed(8)} ${transaction.crypto} for $${transaction.usdValue.toFixed(2)}`;
+                        break;
+                    case 'sell':
+                        details = `Sold ${transaction.amount.toFixed(8)} ${transaction.crypto} for $${transaction.usdValue.toFixed(2)}`;
+                        break;
+                    case 'convert':
+                        details = `Converted ${transaction.amount.toFixed(8)} ${transaction.crypto}`;
+                        break;
+                    case 'deposit':
+                        details = `Deposited ${transaction.amount.toFixed(8)} ${transaction.crypto} ($${transaction.usdValue.toFixed(2)})`;
+                        break;
+                    case 'withdraw':
+                        details = `Withdrew ${transaction.amount.toFixed(8)} ${transaction.crypto} ($${transaction.usdValue.toFixed(2)}) to ${transaction.address}`;
+                        break;
+                }
+                
+                transactionItem.innerHTML = `
+                    <div class="transaction-icon ${transaction.type}">${getTransactionIcon(transaction.type)}</div>
+                    <div class="transaction-details">
+                        <div class="transaction-title">${capitalizeFirstLetter(transaction.type)}</div>
+                        <div class="transaction-desc">${details}</div>
+                        <div class="transaction-date">${formattedDate}</div>
+                    </div>
+                `;
+                
+                transactionList.appendChild(transactionItem);
+            });
+        }
+
+
+        // Add this to the setupEventListeners function
+document.getElementById('withdraw-crypto').addEventListener('change', updateWithdrawBalance);
+document.getElementById('sell-crypto').addEventListener('change', updateSellBalance);
+document.getElementById('convert-from').addEventListener('change', updateConvertBalance);
+document.getElementById('buy-crypto').addEventListener('input', updateBuyEstimate);
+document.getElementById('buy-amount').addEventListener('input', updateBuyEstimate);
+document.getElementById('convert-from').addEventListener('change', updateConvertEstimate);
+document.getElementById('convert-to').addEventListener('change', updateConvertEstimate);
+document.getElementById('convert-amount').addEventListener('input', updateConvertEstimate);
+
+// Add this specific function for the withdraw modal
+function updateWithdrawBalance() {
+    const crypto = document.getElementById('withdraw-crypto').value;
+    // Get the balance for this crypto (or 0 if not in portfolio)
+    const balance = portfolio[crypto] || 0;
+    // Get the balance display element
+    const balanceElement = document.getElementById('withdraw-balance');
+    // Update the display
+    balanceElement.textContent = balance.toFixed(8);
+}
+function updateSellBalance() {
+    const crypto = document.getElementById('sell-crypto').value;
+    const balance = portfolio[crypto] || 0;
+    sellBalance.textContent = balance.toFixed(8);
+}
+
+function updateConvertBalance() {
+    const crypto = document.getElementById('convert-from').value;
+    const balance = portfolio[crypto] || 0;
+    convertBalance.textContent = balance.toFixed(8);
+}
+
+function updateBuyEstimate() {
+    const crypto = document.getElementById('buy-crypto').value;
+    const amount = parseFloat(document.getElementById('buy-amount').value) || 0;
+    const cryptoAmount = amount / cryptoData[crypto].price;
+    buyEstimate.textContent = cryptoAmount.toFixed(8);
+}
+
+function updateConvertEstimate() {
+    const fromCrypto = document.getElementById('convert-from').value;
+    const toCrypto = document.getElementById('convert-to').value;
+    const amount = parseFloat(document.getElementById('convert-amount').value) || 0;
+    
+    if (fromCrypto && toCrypto) {
+        const usdValue = amount * cryptoData[fromCrypto].price;
+        const toAmount = usdValue / cryptoData[toCrypto].price;
+        convertEstimate.textContent = toAmount.toFixed(8);
+    }
+}
+        // Helper function to get transaction icon
+        function getTransactionIcon(type) {
+            switch (type) {
+                case 'buy': return '🔵';
+                case 'sell': return '🔴';
+                case 'convert': return '🔄';
+                case 'deposit': return '⬇️';
+                case 'withdraw': return '⬆️';
+                default: return '📝';
+            }
+        }
+
+        // Helper function to capitalize first letter
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
