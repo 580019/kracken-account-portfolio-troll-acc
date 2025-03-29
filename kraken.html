@@ -878,10 +878,51 @@
             }
         };
 
-        // Initialize portfolio and transaction history from local storage
-        let portfolio = JSON.parse(localStorage.getItem('portfolio')) || {};
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+          
+// Initialize portfolio and transaction history from local storage
+let portfolio = JSON.parse(localStorage.getItem('portfolio'));
+let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 
+// Check if this is the first time (no existing portfolio)
+if (!portfolio) {
+    // Initialize with $1,478.23 worth of tokens
+    portfolio = {
+        'BTC': 0.01, // About $836.94 worth
+        'ETH': 0.25, // About $470.56 worth
+        'SOL': 1.18  // About $170.86 worth
+    };
+    
+    // Add initial transactions to history
+    const now = new Date().toISOString();
+    transactions = [
+        {
+            id: Date.now() - 3000,
+            type: 'deposit',
+            crypto: 'BTC',
+            amount: 0.01,
+            usdValue: 0.01 * 83693.85,
+            address: '',
+            timestamp: now
+        },
+        {
+            id: Date.now() - 2000,
+            type: 'deposit',
+            crypto: 'ETH',
+            amount: 0.25,
+            usdValue: 0.25 * 1882.24,
+            address: '',
+            timestamp: now
+        },
+        {
+            id: Date.now() - 1000,
+            type: 'deposit',
+            crypto: 'SOL',
+            amount: 1.18,
+            usdValue: 1.18 * 144.80,
+            address: '',
+            timestamp: now
+        }
+    ];
         // DOM elements
         const buyBtn = document.getElementById('buy-btn');
         const sellBtn = document.getElementById('sell-btn');
